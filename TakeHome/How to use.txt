@@ -1,0 +1,31 @@
+﻿Url is https://localhost:44332/api/covidinfo/LocationName(optional)/StartDate(optional)/EndDate(optional)
+
+The LocationName can be any string matching a State name or County name.
+
+The StartDate and EndDate can be any string that can be parsed as a date but should not contain a forward slash.  The 
+string '2020-6-1' will parse at June 1, 2020 for example.  Strings such as "6/1/2020" should not be used. 
+
+The return value consists of a message string and the results.
+
+If no location is specified, the message will say "No location provided."
+
+The api will match with any county matching the LocationName provided or any state matching the LocationName provided.
+If there are multiple matches (i.e. Colorado County, Texas and Colorado, the U.S. State), then multiple record sets will 
+be returned.
+
+If there are no locations matching the LocationName specified, then the message will say No Results Found.
+
+For states, the data will be combined for every county.
+
+Optional Start Date and End Dates can be provided.  The values should be parsable as a date.  If no value is provided or 
+the date cannot be parsed, then the start date will be the first day of data and the end date will be the last day of 
+data.  If start date and end dates are provided, the api will only analyze data between those two dates.
+
+There are a few attempts to check the integrity of the data.  One check is that the fields are in the proper position in
+the data.  Another is that the dates provided in the data can be parsed as dates and the case counts can be parsed as 
+integers.  If any of these checks fail, the message will say errors encountered.
+
+In building this app, the assumption was made that the case counts provided in the data were cumulative case counts and 
+would always increase.  For some locations, however, this was found to not be the case.  For those locations and dates,
+the daily case count is treated as a negative number.  How to handle such incorrect data can be a topic for further 
+discussion.
